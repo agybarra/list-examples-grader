@@ -15,14 +15,15 @@ echo 'Finished cloning'
 # Then, add here code to compile and run, and do any post-processing of the
 # tests
 
-if [[ -f student-submission/ListExamples.java ]]
+FILE_PATH=$(find "student-submission" -type f -name "ListExamples.java")
+if ! [[ -z "$FILE_PATH" ]]
 then
     echo "file found!"
 else 
     echo "file not found!"
 fi
 
-cp student-submission/ListExamples.java grading-area
+cp $FILE_PATH grading-area
 cp TestListExamples.java grading-area
 cp -r lib grading-area
 
@@ -38,8 +39,8 @@ fi
 
 java -cp $CPATH org.junit.runner.JUnitCore TestListExamples > junit-output.txt
 
-
-if [[$(grep -q "OK")]]
+OK=$(grep "OK" junit-output.txt)
+if ! [[ -z $OK ]]
 then 
     echo "All tests passed!"
     exit
